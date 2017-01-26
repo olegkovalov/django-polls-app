@@ -1,0 +1,20 @@
+[run]
+omit =
+    *migrations*
+    *tests*
+    /usr/*
+    */virtualenvs/*
+    */env/*
+
+[report]
+exclude_lines =
+    noqa
+    pragma: no cover
+    def __unicode__
+    def __repr__
+    def __str__
+    if settings\.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+
+show_missing = True

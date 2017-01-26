@@ -1,0 +1,6 @@
+---
+user: polls
+project_path: /home/polls/polls/
+project_name: polls
+docker_package: docker-engine=1.12.3-0~xenial
+systemd_config_path: /etc/systemd/system/

@@ -1,0 +1,40 @@
+# OS
+.DS_Store
+
+# Common IDEs
+*.swp
+.idea/
+celerybeat-schedule
+celerybeat.pid
+*.ipynb
+
+# Python
+*.pyc
+*.pyo
+env/
+
+# Coverage
+coverage/
+.coverage
+coverage.xml
+
+# Nose tests
+nosetests.xml
+
+# Developers Makefile
+makefile-local
+
+# Default environment settings
+.env
+env.private
+
+# Django static / media
+/src/public/
+!/src/public/media/.gitkeep
+!/src/public/static/.gitkeep
+
+# Vagrant
+.vagrant
+
+# Ansible
+*.retry

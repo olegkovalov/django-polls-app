@@ -1,0 +1,25 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ poll.question }}</h1>
+    </div>
+
+    <h2>Results</h2>
+
+    <table class="table table-condensed">
+        <colgroup>
+            <col class="col-md-3">
+            <col class="col-md-9">
+        </colgroup>
+        <tbody>
+        {% for choice in poll.choices.all %}
+            <tr>
+                <td>{{ choice.choice_text }}</td>
+                <td>{{ choice.votes }} vote{{ choice.votes|pluralize }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{% url 'polls:detail' poll.id %}" class="btn btn-default">Vote again?</a>
+{% endblock %}

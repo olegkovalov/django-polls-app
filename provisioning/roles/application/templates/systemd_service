@@ -1,0 +1,15 @@
+[Unit]
+Description=Docker containers
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStart=/usr/local/bin/docker-compose --project-name {{ project_name }} up
+ExecStop=/usr/local/bin/docker-compose --project-name {{ project_name }} stop
+Restart=always
+RestartSec=1s
+StartLimitInterval=360
+WorkingDirectory={{ project_path }}
+
+[Install]
+WantedBy=local.target

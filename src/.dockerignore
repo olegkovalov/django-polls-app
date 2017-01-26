@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+
+# Common IDEs
+*.swp
+.idea/
+celerybeat-schedule
+celerybeat.pid
+*.ipynb
+
+# Python
+*.pyc
+*.pyo
+env/
+
+# Docs
+docs/
+
+# Coverage
+coverage/
+.coverage
+coverage.xml
+
+# Nose tests
+nosetests.xml
+
+# Developers Makefile
+makefile-local
+
+# Default environment settings
+.env
+
+# Developers docker-compose file
+docker-compose-development.yml

@@ -1,0 +1,33 @@
+machine:
+  services:
+    - docker
+    - redis
+  environment:
+    DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
+    FEATURES: ()
+    SECRET_KEY: fake-secret-key-for-testing
+  python:
+    version: 3.5.1
+
+general:
+  build_dir: src
+
+dependencies:
+  override:
+    - pip install Ansible==2.2.0
+    - pip install -r ./requirements.txt
+
+test:
+  override:
+    - mkdir $CIRCLE_TEST_REPORTS/junit
+    - python manage.py collectstatic --no-input
+    - python manage.py test --testrunner=django_nose.NoseTestSuiteRunner --with-xunit --xunit-file=$CIRCLE_TEST_REPORTS/junit/test-results.xml
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -u $DOCKER_USER -p $DOCKER_PASS -e $DOCKER_EMAIL
+      - docker build --rm=false -t doomatel/django-polls-webapp .
+      - docker push doomatel/django-polls-webapp
+      - ansible-playbook ../provisioning/server.yml -l prod -e env=prod -i ../provisioning/inventory/prod

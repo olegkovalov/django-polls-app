@@ -1,0 +1,13 @@
+---
+- name: Provision server
+  hosts: all
+  become: yes
+  become_user: root
+
+  vars_files:
+    - "environments/default.yml"
+    - "environments/{{ env }}.yml"
+
+  roles:
+    - docker
+    - application

@@ -1,0 +1,8 @@
+Hi! We have a new poll created by {{ poll.author }}.
+
+{{ poll.question }}
+
+Choices:
+{% for choice in poll.choices.all %}
+* {{ choice.choice_text }}
+{% endfor %}

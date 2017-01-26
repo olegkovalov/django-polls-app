@@ -1,0 +1,48 @@
+---
+- name: create project directory
+  file: path="{{ project_path }}" state=directory mode=0755 owner="{{ user }}"
+
+- name: copy compose file
+  synchronize: src="../docker-compose.yml" dest="{{ project_path }}docker-compose.yml"
+  become: yes
+  become_user: "{{user}}"
+
+- name: copy nginx.conf template
+  synchronize: src="../nginx.conf" dest="{{ project_path }}nginx.conf"
+  become: yes
+  become_user: "{{user}}"
+
+- name: copy public environment file
+  synchronize: src="../env.public" dest="{{ project_path }}env.public"
+  become: yes
+  become_user: "{{user}}"
+
+- name: ensure that private environment file exists
+  file: path="{{ project_path }}env.private" state=touch mode=0600 owner="{{ user }}"
+
+- name: create application service config file
+  template: src="systemd_service" dest="{{ systemd_config_path }}{{ project_name }}.service"
+  register: service_file
+
+- name: add user ability to control service
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%app\s'
+    line: 'app ALL=(ALL) NOPASSWD: /usr/sbin/service {{ project_name }} start,/usr/sbin/service {{ project_name }} stop,/usr/sbin/service {{ project_name }} restart'
+
+- name: reload systemd
+  shell: systemctl daemon-reload
+  when: service_file.changed
+
+- name: stop app service
+  service: name={{ project_name }} state=stopped
+
+- name: docker-compose pull
+  command: docker-compose --project-name {{ project_name }} pull chdir={{ project_path }}
+
+- name: start app service
+  service: name={{ project_name }} state=started
+
+
+
